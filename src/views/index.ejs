@@ -4,10 +4,185 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style/output.css" />
-    <title>Document</title>
+    <title>Book Tracker</title>
   </head>
-  <body>
-    <h1 class="text-red-500">BLAJO</h1>
-    <p class="text-red-700 text-9xl">afafwafa</p>
+  <body class="bg-pink-50 text-gray-700">
+    <!-- Head part title and navigation -->
+    <section
+      id="header"
+      class="bg-pink-bg bg-top bg-cover bg-no-repeat rounded-b-xl mb-10 lg:bg-center md:bg-center"
+    >
+      <div class="container mx-auto pt-6">
+        <h1
+          class="l text-center text-6xl mb-24 font-semibold text-white/80 md:text-8xl lg:text-8xl"
+        >
+          The Librarian
+        </h1>
+        <div class="flex justify-center">
+          <button
+            id="add-new-book-btn"
+            class="text-white px-3 py-1 text-xl font-semibold mb-8 bg-white/10 backdrop-blur-2xl border-2 border-white rounded-2xl"
+          >
+            Add new
+          </button>
+        </div>
+        <div
+          id="add-book-div"
+          class="p-4 hidden flex justify-center mt-10 lg:mt-16"
+        >
+          <form
+            action="/add-book"
+            method="POST"
+            class="flex flex-col max-w-xl flex-grow space-y-2"
+          >
+            <p class="text-center text-white text-xl font-semibold">
+              Begin your new read!
+            </p>
+
+            <input
+              class="p-1 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300"
+              type="text"
+              placeholder="ISBN NUMBER"
+              name="isbn"
+            />
+            <input
+              class="p-1 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300"
+              type="text"
+              placeholder="TITLE"
+              name="title"
+            />
+            <input
+              class="p-1 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300"
+              type="date"
+              name="date"
+            />
+            <input
+              class="p-1 mb-4 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300"
+              type="number"
+              placeholder="GRADE"
+              name="grade"
+            />
+            <input
+              class="border-2 bg-white/35 backdrop-blur-2xl border-white rounded-2xl font-bold text-xl text-white mt-2 self-center px-4 py-1"
+              type="submit"
+              value="ADD"
+            />
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- book display part -->
+    <section id="book-display">
+      <div class="container mx-auto">
+        <% if(locals.books){ %>
+
+        <!-- book card container -->
+        <div class="p-4 grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+          <% books.forEach(book => { %>
+
+          <!-- individual book card -->
+
+          <div
+            class="bg-white rounded-2xl overflow-hidden flex flex-col max-w-sm shadow-lg hover:scale-105"
+          >
+            <img class="w-full" src="<%= book.img_url %>" />
+            <!-- text-box -->
+            <div class="mt-4 px-3 pb-4">
+              <h2 class="uppercase text-center text-2xl mb-3">
+                <%= book.title %>
+              </h2>
+
+              <p class="text-left">ISBN: <%= book.isbn %></p>
+              <p>
+                Started reading: <%= new
+                Date(book.reading_date).toISOString().split("T")[0] %>
+              </p>
+              <p>My grade: <%= book.grade %>/10</p>
+            </div>
+            <!-- action part -->
+            <div class="flex justify-center space-x-4 pb-4">
+              <form action="/delete/<%= book.id %>" method="POST">
+                <button id="del-btn" type="submit">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#5f6368"
+                  >
+                    <path
+                      d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"
+                    />
+                  </svg>
+                </button>
+              </form>
+
+              <form action="/edit/<%= book.id %>" method="POST">
+                <button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="#5f6368"
+                  >
+                    <path
+                      d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"
+                    />
+                  </svg>
+                </button>
+              </form>
+              <a href="/notes/<%= book.id %>"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#5f6368"
+                >
+                  <path
+                    d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <% }); %>
+        </div>
+
+        <% }else{ %>
+        <p>Noo books yet!</p>
+        <% } %>
+      </div>
+    </section>
+
+    <!-- footer -->
+    <section id="footer">
+      <footer class="text-center mt-24 text-slate-500/70">
+        <p>Copyright &copy; 2024 Antonio BLašković</p>
+        <p>Persistent storage project</p>
+      </footer>
+    </section>
+
+    <script>
+      const addNewBookBtn = document.getElementById("add-new-book-btn");
+      const addNewBookDiv = document.getElementById("add-book-div");
+
+      addNewBookBtn.addEventListener("click", () => {
+        addNewBookDiv.classList.toggle("hidden");
+
+        if (!addNewBookDiv.classList.contains("hidden")) {
+          addNewBookBtn.innerHTML = "Close";
+        } else {
+          addNewBookBtn.textContent = "Add new";
+        }
+      });
+
+      function deleteAlert() {
+        alert("Book deleted");
+      }
+    </script>
   </body>
 </html>

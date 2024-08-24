@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style/output.css" />
+    <title>Book Tracker</title>
+  </head>
+  <body class="bg-pink-50 text-gray-700">
+
+    <section
+    id="header"
+    class="bg-pink-bg bg-top bg-cover bg-no-repeat rounded-b-xl mb-10 lg:bg-center md:bg-center"
+  >
+    <div class="container mx-auto pt-6 pb-12">
+      <h1
+        class="l text-center text-6xl mb-24 font-semibold text-white/80 md:text-8xl lg:text-8xl"
+      >
+        The Librarian
+      </h1>
+
+    </div>
+  </section>
+
+    <!-- hero -->
+    <section id="hero" class="bg-red-50 mb-12">
+      <div class="flex flex-col md:flex-row md:space-x-10 ">
+        <!-- img part -->
+        <div class="rounded-lg overflow-hidden">
+          <img src="<%= book.img_url %>" />
+        </div>
+
+        <!-- text-part -->
+        <div class=" p-4 md:p-0 ">
+          <h2 class="uppercase text-6xl font-semibold text-center my-4  md:text-8xl md:my-8 "><%= book.title %></h2>
+          <!-- small text box  -->
+          <div class="md:text-xl font-semibold mt-6">
+            <p class="text-left">ISBN: <%= book.isbn %></p>
+            <p>
+              Started reading: <%= new
+              Date(book.reading_date).toISOString().split("T")[0] %>
+            </p>
+            <p>My grade: <%= book.grade %>/10</p>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="divider">
+      <div class="border-b-2 border-pink-100 mb-6"></div>
+    </section>
+
+    <% if(!locals.edit){ %>
+    <!-- book review part -->
+     <section id="book-review">
+      <div class="container mx-auto">
+        <% if(!locals.review ){ %>
+          <p class="text-center text-2xl lg:text-4xl mb-8 ">No review yet! Wanna add one?</p>
+          <div class="p-4">
+            <form action="/add-review/<%= book.id %>" method="POST" class="flex flex-col items-center space-y-4">
+              <input type="text" name="review" placeholder="Your book review" class="pb-52 lg:px-52 w-full   p-1 rounded-lg pt-2  focus:outline-none focus:border-2 focus:border-pink-300 placeholder:text-center lg:placeholder:text-xl">
+              <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#5f6368"><path d="M448.67-280h66.66v-164H680v-66.67H515.33V-680h-66.66v169.33H280V-444h168.67v164Zm31.51 200q-82.83 0-155.67-31.5-72.84-31.5-127.18-85.83Q143-251.67 111.5-324.56T80-480.33q0-82.88 31.5-155.78Q143-709 197.33-763q54.34-54 127.23-85.5T480.33-880q82.88 0 155.78 31.5Q709-817 763-763t85.5 127Q880-563 880-480.18q0 82.83-31.5 155.67Q817-251.67 763-197.46q-54 54.21-127 85.84Q563-80 480.18-80Zm.15-66.67q139 0 236-97.33t97-236.33q0-139-96.87-236-96.88-97-236.46-97-138.67 0-236 96.87-97.33 96.88-97.33 236.46 0 138.67 97.33 236 97.33 97.33 236.33 97.33ZM480-480Z"/></svg></button>
+            </form>
+          </div>
+          <% }else{ %>
+
+            <div class="container mx-auto">
+              <h2 class="text-center text-xl mb-8 font-semibold">What did you say about the book?</h2>
+              <p ><%= review.review %></p>
+            </div>
+            
+            <% } %>
+      </div>
+     </section>
+     <% } %>
+
+     <!-- EDIT SECTION -->
+
+     <% if (locals.edit){ %>
+      <section id="edit">
+        <div class="container mx-auto p-4">
+          <p class="text-center text-2xl lg:text-4xl mb-8 ">Lets edit your entry!</p>
+          <div class="flex justify-center">
+          <form
+          action="/add-book"
+          method="POST"
+          class="flex flex-col max-w-xl flex-grow space-y-2"
+        >
+         
+
+          <input
+            class="p-1 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300"
+            type="text"
+            placeholder="ISBN NUMBER"
+            value="<%= book.isbn %>"
+            name="isbn"
+          />
+          <input
+            class="p-1 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300"
+            type="text"
+            placeholder="TITLE"
+            value="<%= book.title %>"
+            name="title"
+          />
+         
+          <input
+            class="p-1 mb-4 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300"
+            type="number"
+            placeholder="GRADE"
+            value="<%= book.grade %>"
+            name="grade"
+          />
+          <input
+          class="p-1 pb-16 md:pb-48 mb-4 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300 placeholder:text-center "
+          type="text"
+          placeholder="Your review"
+          name="review"
+        />
+          <input
+            class="border-2  bg-pink-400/35 backdrop-blur-2xl border-white rounded-2xl font-bold text-xl text-white mt-2 self-center px-4 py-1"
+            type="submit"
+            value="ADD"
+          />
+          
+        </form>
+      </div>
+        </div>
+      </section>
+      <% } %>
+  </body>
+</html>

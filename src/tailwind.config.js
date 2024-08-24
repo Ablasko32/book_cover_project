@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./views/**/*.ejs"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "pink-bg": "url('images/book-bg.jpg')",
+      },
+    },
   },
   plugins: [],
 };
