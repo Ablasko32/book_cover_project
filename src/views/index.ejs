@@ -72,6 +72,72 @@
       </div>
     </section>
 
+    <!-- filter section -->
+    <section id="filter">
+      <div class="container mx-auto">
+        <div class="pl-4">
+          <button
+            id="filter-menu-btn"
+            class="text-gray-400 px-3 py-1 text-xl font-semibold border-2 border-gray-300 rounded-2xl"
+          >
+            Filter
+          </button>
+        </div>
+        <!-- filter options section -->
+        <div id="filter-options" class="pl-5 mt-4 hidden">
+          <div>
+            <form class="flex space-x-2" action="/search" method="POST">
+              <input
+                name="search"
+                type="text"
+                placeholder="SEARCH"
+                class="p-1 rounded-lg focus:outline-none focus:border-2 focus:border-pink-300"
+              />
+              <button type="submit">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#5f6368"
+                >
+                  <path
+                    d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <div class="flex justify-start space-x-5 mt-2">
+              <form action="/top" method="POST">
+                <button
+                  class="font-semibold border-b-2 border-gray-300"
+                  type="submit"
+                >
+                  TOP PICKS
+                </button>
+              </form>
+              <form action="/asc" method="POST">
+                <button
+                  class="font-semibold border-b-2 border-gray-300"
+                  type="submit"
+                >
+                  ASC &uarr;
+                </button>
+              </form>
+              <form action="/desc" method="POST">
+                <button
+                  class="font-semibold border-b-2 border-gray-300"
+                  type="submit"
+                >
+                  DESC &darr;
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- book display part -->
     <section id="book-display">
       <div class="container mx-auto">
@@ -88,7 +154,7 @@
           >
             <img class="w-full" src="<%= book.img_url %>" />
             <!-- text-box -->
-            <div class="mt-4 px-3 pb-4">
+            <div class="relative mt-4 px-3 pb-4">
               <h2 class="uppercase text-center text-2xl mb-3">
                 <%= book.title %>
               </h2>
@@ -99,6 +165,13 @@
                 Date(book.reading_date).toISOString().split("T")[0] %>
               </p>
               <p>My grade: <%= book.grade %>/10</p>
+
+              <!-- grade color -->
+              <% let color="bg-green-400"; if(book.grade<4){ color="bg-red-400"
+              }else if(book.grade<7){ color="bg-yellow-400" } %>
+              <div
+                class="absolute right-3 top-1 <%=color%> h-4 w-4 rounded-full opacity-80"
+              ></div>
             </div>
             <!-- action part -->
             <div class="flex justify-center space-x-4 pb-4">
@@ -159,7 +232,7 @@
     </section>
 
     <!-- footer -->
-    <section id="footer">
+    <section id="footer" class="pb-4">
       <footer class="text-center mt-24 text-slate-500/70">
         <p>Copyright &copy; 2024 Antonio BLašković</p>
         <p>Persistent storage project</p>
@@ -180,9 +253,12 @@
         }
       });
 
-      function deleteAlert() {
-        alert("Book deleted");
-      }
+      const filterMenuBtn = document.getElementById("filter-menu-btn");
+      const filterMenu = document.getElementById("filter-options");
+
+      filterMenuBtn.addEventListener("click", () => {
+        filterMenu.classList.toggle("hidden");
+      });
     </script>
   </body>
 </html>

@@ -2,13 +2,16 @@ import express from "express";
 import bodyParser from "body-parser";
 import pg from "pg";
 import axios from "axios";
+import { configDotenv } from "dotenv";
+
+configDotenv();
 
 const db = new pg.Pool({
-  host: "localhost",
-  port: 5432,
-  user: "postgres",
-  database: "ANGELAYU",
-  password: "Banana123",
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
 });
 db.connect();
 
@@ -75,8 +78,53 @@ async function getReviewBookId(id) {
       id,
     ]);
 
-    console.log(result.rows[0]);
     return result.rows[0];
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// search book by title
+async function searchBookTitle(title) {
+  try {
+    const result = await db.query(
+      "SELECT * FROM books WHERE title ILIKE ($1)",
+      ["%" + title + "%"]
+    );
+
+    return result.rows;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// sort books desc
+async function getBooksDesc() {
+  try {
+    const result = await db.query("SELECT * FROM books ORDER BY grade DESC");
+    return result.rows;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// sort books asc
+async function getBooksAsc() {
+  try {
+    const result = await db.query("SELECT * FROM books ORDER BY grade ASC");
+    return result.rows;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+// sort books asc
+async function getBooksTop() {
+  try {
+    const result = await db.query(
+      "SELECT * FROM books ORDER BY grade DESC LIMIT 5"
+    );
+    return result.rows;
   } catch (err) {
     console.log(err);
   }
@@ -114,13 +162,11 @@ app.get("/notes/:id", async (req, res) => {
 });
 
 app.post("/delete/:id", async (req, res) => {
-  console.log(req.params.id);
   await deleteBookId(req.params.id);
   res.redirect("/");
 });
 
 app.post("/add-review/:id", async (req, res) => {
-  console.log(req.params.id);
   await addBookReviewId(req.params.id, req.body.review);
   res.redirect("/");
 });
@@ -129,6 +175,26 @@ app.post("/edit/:id", async (req, res) => {
   const book = await getBookId(req.params.id);
   const edit = true;
   res.render("notes.ejs", { book: book, edit: edit });
+});
+
+app.post("/search", async (req, res) => {
+  const books = await searchBookTitle(req.body.search);
+  res.render("index.ejs", { books: books });
+});
+
+app.post("/desc", async (req, res) => {
+  const books = await getBooksDesc();
+  res.render("index.ejs", { books: books });
+});
+
+app.post("/asc", async (req, res) => {
+  const books = await getBooksAsc();
+  res.render("index.ejs", { books: books });
+});
+
+app.post("/top", async (req, res) => {
+  const books = await getBooksTop();
+  res.render("index.ejs", { books: books });
 });
 
 app.listen(port, () => {
