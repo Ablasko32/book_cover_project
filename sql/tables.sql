@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS books(
+ 	id INTEGER PRIMARY KEY,
+	title VARCHAR(150),
+	isbn VARCHAR(45),
+	reading_date DATE,
+	grade FLOAT,
+	img_url VARCHAR(200)
+
+);
+
+CREATE TABLE IF NOT EXISTS reviews(
+ 	id INTEGER PRIMARY KEY,
+	review TEXT,
+	book_id INTEGER REFERENCES books(id) ON DELETE CASCADE	
+
+);
+
