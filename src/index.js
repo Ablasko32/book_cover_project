@@ -27,7 +27,7 @@ app.get("/", async (req, res) => {
   const searchTerm = req.query.search || "";
   const page = parseInt(req.query.page) || 1;
   const offset = (page - 1) * LIMIT;
-  const books = await getAllBooks(page, offset);
+  const books = await searchBookTitle(searchTerm, offset);
   res.render("index.ejs", { books: books, page: page, searchTerm: searchTerm });
 });
 
