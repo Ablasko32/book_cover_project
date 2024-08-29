@@ -3,9 +3,9 @@ import bodyParser from "body-parser";
 import {
   getAllBooks,
   getBookId,
-  getBooksAsc,
-  getBooksDesc,
-  getBooksTop,
+  // getBooksAsc,
+  // getBooksDesc,
+  // getBooksTop,
   getReviewBookId,
   searchBookTitle,
   deleteBookId,
@@ -24,10 +24,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
+  const searchTerm = req.query.search || "";
   const page = parseInt(req.query.page) || 1;
   const offset = (page - 1) * LIMIT;
   const books = await getAllBooks(page, offset);
-  res.render("index.ejs", { books: books, page: page });
+  res.render("index.ejs", { books: books, page: page, searchTerm: searchTerm });
 });
 
 app.post("/add-book", async (req, res) => {
@@ -72,33 +73,34 @@ app.post("/edit/:id", async (req, res) => {
   res.render("notes.ejs", { book: book, edit: edit });
 });
 
-app.post("/search", async (req, res) => {
+app.get("/search", async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const offset = (page - 1) * LIMIT;
-  const books = await searchBookTitle(req.body.search, offset);
-  res.render("index.ejs", { books: books, page: page });
+  const searchTerm = req.query.search || "";
+  const books = await searchBookTitle(searchTerm, offset);
+  res.render("index.ejs", { books: books, page: page, searchTerm: searchTerm });
 });
 
-app.post("/desc", async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const offset = (page - 1) * LIMIT;
-  const books = await getBooksDesc(offset);
-  res.render("index.ejs", { books: books, page: page });
-});
+// app.post("/desc", async (req, res) => {
+//   const page = parseInt(req.query.page) || 1;
+//   const offset = (page - 1) * LIMIT;
+//   const books = await getBooksDesc(offset);
+//   res.render("index.ejs", { books: books, page: page });
+// });
 
-app.post("/asc", async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const offset = (page - 1) * LIMIT;
-  const books = await getBooksAsc(offset);
-  res.render("index.ejs", { books: books, page: page });
-});
+// app.post("/asc", async (req, res) => {
+//   const page = parseInt(req.query.page) || 1;
+//   const offset = (page - 1) * LIMIT;
+//   const books = await getBooksAsc(offset);
+//   res.render("index.ejs", { books: books, page: page });
+// });
 
-app.post("/top", async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
+// app.post("/top", async (req, res) => {
+//   const page = parseInt(req.query.page) || 1;
 
-  const books = await getBooksTop();
-  res.render("index.ejs", { books: books, page: page });
-});
+//   const books = await getBooksTop();
+//   res.render("index.ejs", { books: books, page: page });
+// });
 
 app.listen(port, () => {
   console.log(`Server running on localhost port: ${port}`);

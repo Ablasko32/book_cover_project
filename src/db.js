@@ -100,51 +100,51 @@ async function searchBookTitle(title, offset) {
   }
 }
 
-// sort books desc
-async function getBooksDesc(offset) {
-  try {
-    const result = await db.query(
-      "SELECT * FROM books ORDER BY grade DESC LIMIT $1 OFFSET $2",
-      [LIMIT, offset]
-    );
-    return result.rows;
-  } catch (err) {
-    console.log(err);
-  }
-}
+// // sort books desc
+// async function getBooksDesc(offset) {
+//   try {
+//     const result = await db.query(
+//       "SELECT * FROM books ORDER BY grade DESC LIMIT $1 OFFSET $2",
+//       [LIMIT, offset]
+//     );
+//     return result.rows;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
-// sort books asc
-async function getBooksAsc(offset) {
-  try {
-    const result = await db.query(
-      "SELECT * FROM books ORDER BY grade ASC LIMIT $1 OFFSET $2",
-      [LIMIT, offset]
-    );
-    return result.rows;
-  } catch (err) {
-    console.log(err);
-  }
-}
+// // sort books asc
+// async function getBooksAsc(offset) {
+//   try {
+//     const result = await db.query(
+//       "SELECT * FROM books ORDER BY grade ASC LIMIT $1 OFFSET $2",
+//       [LIMIT, offset]
+//     );
+//     return result.rows;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
-// sort books asc
-async function getBooksTop() {
-  try {
-    const result = await db.query(
-      "SELECT * FROM books ORDER BY grade DESC LIMIT 5"
-    );
-    return result.rows;
-  } catch (err) {
-    console.log(err);
-  }
-}
+// // sort books asc
+// async function getBooksTop() {
+//   try {
+//     const result = await db.query(
+//       "SELECT * FROM books ORDER BY grade DESC LIMIT 5"
+//     );
+//     return result.rows;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// }
 
 export {
   getAllBooks,
   getBookId,
   addNewBook,
-  getBooksTop,
-  getBooksAsc,
-  getBooksDesc,
+  // getBooksTop,
+  // getBooksAsc,
+  // getBooksDesc,
   searchBookTitle,
   getReviewBookId,
   addBookReviewId,

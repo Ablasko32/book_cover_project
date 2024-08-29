@@ -604,6 +604,26 @@ video {
   top: 0.25rem;
 }
 
+.left-0 {
+  left: 0px;
+}
+
+.top-0 {
+  top: 0px;
+}
+
+.left-3 {
+  left: 0.75rem;
+}
+
+.top-5 {
+  top: 1.25rem;
+}
+
+.bottom-4 {
+  bottom: 1rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -680,6 +700,27 @@ video {
 
 .h-4 {
   height: 1rem;
+}
+
+.h-fit {
+  height: -moz-fit-content;
+  height: fit-content;
+}
+
+.h-48 {
+  height: 12rem;
+}
+
+.h-64 {
+  height: 16rem;
+}
+
+.h-72 {
+  height: 18rem;
+}
+
+.h-80 {
+  height: 20rem;
 }
 
 .w-4 {
