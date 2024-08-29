@@ -21,7 +21,7 @@
         <div class="flex justify-center">
           <button
             id="add-new-book-btn"
-            class="text-white px-3 py-1 text-xl font-semibold mb-8 bg-white/10 backdrop-blur-2xl border-2 border-white rounded-2xl"
+            class="text-white px-3 py-1 text-xl font-semibold mb-8 bg-white/10 backdrop-blur-2xl border-2 border-white rounded-2xl hover:-translate-y-1"
           >
             Add new
           </button>
@@ -63,7 +63,7 @@
               name="grade"
             />
             <input
-              class="border-2 bg-white/35 backdrop-blur-2xl border-white rounded-2xl font-bold text-xl text-white mt-2 self-center px-4 py-1"
+              class="border-2 bg-white/35 backdrop-blur-2xl border-white rounded-2xl font-bold text-xl text-white mt-2 self-center px-4 py-1 hover:-translate-y-1"
               type="submit"
               value="ADD"
             />
@@ -239,6 +239,54 @@
         <% }else{ %>
         <p>Noo books yet!</p>
         <% } %>
+      </div>
+    </section>
+
+    <!-- pagination -->
+    <section id="pagination" class="mt-4">
+      <div class="container mx-auto flex justify-center">
+        
+          <div class="flex space-x-2 items-center">
+            <% if (page > 1) { %>
+            <a
+              class="block bg-white p-2 rounded-full flex justify-center items-center"
+              href="/?page=<%= page - 1 %>"
+              ><span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 -960 960 960"
+                  width="20px"
+                  fill="#5f6368"
+                >
+                  <path
+                    d="M384-96 0-480l384-384 68 68-316 316 316 316-68 68Z"
+                  />
+                </svg> </span
+            ></a>
+            <% } %>
+
+            <p  ></p><%= page %></p>
+
+            <a
+              class="block bg-white p-2 rounded-full flex justify-center items-center"
+              href="/?page=<%= page + 1 %>"
+              ><span
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="20px"
+                  viewBox="0 -960 960 960"
+                  width="20px"
+                  fill="#5f6368"
+                >
+                  <path
+                    d="m288-96-68-68 316-316-316-316 68-68 384 384L288-96Z"
+                  /></svg></span
+            ></a>
+          
+        </div>
+
+
       </div>
     </section>
 

@@ -3,6 +3,8 @@ import { configDotenv } from "dotenv";
 
 configDotenv();
 
+const LIMIT = 3;
+
 const db = new pg.Pool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
@@ -27,9 +29,12 @@ async function addNewBook(title, isbn, reading_date, grade, img_url) {
 }
 
 // query all books
-async function getAllBooks() {
+async function getAllBooks(offset) {
   try {
-    const result = await db.query("SELECT * FROM books");
+    const result = await db.query("SELECT * FROM books LIMIT $1 OFFSET $2", [
+      LIMIT,
+      offset,
+    ]);
     return result.rows;
   } catch (err) {
     console.log(err);
@@ -82,11 +87,11 @@ async function getReviewBookId(id) {
 }
 
 // search book by title
-async function searchBookTitle(title) {
+async function searchBookTitle(title, offset) {
   try {
     const result = await db.query(
-      "SELECT * FROM books WHERE title ILIKE ($1)",
-      ["%" + title + "%"]
+      "SELECT * FROM books WHERE title ILIKE ($1) LIMIT $2 OFFSET $3",
+      ["%" + title + "%", LIMIT, offset]
     );
 
     return result.rows;
@@ -96,9 +101,12 @@ async function searchBookTitle(title) {
 }
 
 // sort books desc
-async function getBooksDesc() {
+async function getBooksDesc(offset) {
   try {
-    const result = await db.query("SELECT * FROM books ORDER BY grade DESC");
+    const result = await db.query(
+      "SELECT * FROM books ORDER BY grade DESC LIMIT $1 OFFSET $2",
+      [LIMIT, offset]
+    );
     return result.rows;
   } catch (err) {
     console.log(err);
@@ -106,9 +114,12 @@ async function getBooksDesc() {
 }
 
 // sort books asc
-async function getBooksAsc() {
+async function getBooksAsc(offset) {
   try {
-    const result = await db.query("SELECT * FROM books ORDER BY grade ASC");
+    const result = await db.query(
+      "SELECT * FROM books ORDER BY grade ASC LIMIT $1 OFFSET $2",
+      [LIMIT, offset]
+    );
     return result.rows;
   } catch (err) {
     console.log(err);
